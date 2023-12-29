@@ -24,6 +24,9 @@ function setup() {
 
 function draw() {
   const is3D = is3DGen();
+  ambientLight(230);
+  directionalLight(255, 255, 255, 0.5, -0.5, -1);
+
   rotateX(PI / 2);
   // if (is3D) {
   //   createCanvas(400, 400, WEBGL);
@@ -292,30 +295,29 @@ function drawShape3D(x, y, size, frequencies, theme) {
   for (let i = 0; i < cumulativeFreq.length; i++) {
     if (rand < cumulativeFreq[i]) {
       if (i === 0) {
-        fill(theme[0]);
+        ambientMaterial(color(theme[0]));
         push();
         translate(x, y, 0);
         rotateX(HALF_PI);
         cylinder(size / 2, getRand(size, 200)); // 3D ellipse
         pop();
       } else if (i === 1) {
-        fill(theme[1]);
+        ambientMaterial(color(theme[1]));
         push();
         translate(x, y, 0);
         box(size, size, getRand(size, 200)); // 3D box
         pop();
       } else if (i === 2) {
-        fill(theme[2]);
+        // let triColor = color(theme[2]);
+
+        let triColor = color("blue");
+        ambientMaterial("#F6F6F6");
+
         // 3D triangle
-        const halfBase = size / 2;
-        const height = Math.sqrt(size * size - halfBase * halfBase);
-        beginShape();
-        vertex(x, y, 0);
-        vertex(x + size / 2, y + size, 0);
-        vertex(x, y, size * 2);
-        endShape(CLOSE);
+        drawTriangularPrism(x, y, size, triColor);
       } else if (i === 3) {
-        fill(theme[3]);
+        ambientMaterial(color(theme[3]));
+
         // 3D diamond
         beginShape();
         vertex(x, y, 0);
@@ -327,4 +329,58 @@ function drawShape3D(x, y, size, frequencies, theme) {
       break;
     }
   }
+}
+
+function drawTriangularPrism(x, y, size, triColor) {
+  const halfBase = size / 2;
+  const height = Math.sqrt(size * size - halfBase * halfBase);
+  const zHeight = getRand(size, 200);
+
+  // Bottom triangle
+
+  beginShape();
+
+  vertex(x - halfBase, y + height / 2, 0);
+  vertex(x + halfBase, y + height / 2, 0);
+  vertex(x, y - height / 2, 0);
+  endShape(CLOSE);
+
+  // Top triangle
+
+  beginShape();
+
+  vertex(x - halfBase, y + height / 2, zHeight);
+  vertex(x + halfBase, y + height / 2, zHeight);
+  vertex(x, y - height / 2, zHeight);
+  endShape(CLOSE);
+
+  // Side faces
+
+  beginShape();
+
+  vertex(x - halfBase, y + height / 2, 0);
+  vertex(x + halfBase, y + height / 2, 0);
+  vertex(x + halfBase, y + height / 2, zHeight);
+  vertex(x - halfBase, y + height / 2, zHeight);
+  endShape(CLOSE);
+
+  beginShape();
+
+  vertex(x - halfBase, y + height / 2, 0);
+  vertex(x, y - height / 2, 0);
+  vertex(x, y - height / 2, zHeight);
+  vertex(x - halfBase, y + height / 2, zHeight);
+  endShape(CLOSE);
+
+  beginShape();
+
+  vertex(x + halfBase, y + height / 2, 0);
+  vertex(x, y - height / 2, 0);
+  vertex(x, y - height / 2, zHeight);
+  vertex(x + halfBase, y + height / 2, zHeight);
+  endShape(CLOSE);
+}
+
+function normalGetter(in1, in2, in3) {
+  // chatGPT
 }
