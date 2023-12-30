@@ -1,4 +1,7 @@
-let canControl = true;
+// let seed = 3;
+
+// USER CONTROL VARIABLES
+let canControl = false;
 let controls = {
   numShapes: 1,
   // density: [13, 15, 2],
@@ -6,18 +9,12 @@ let controls = {
   shapeFreq: [0, 0, 1, 0],
   // theme: [...shuffleArray(["#DB4F54", "#1F3359", "#FCD265", "#B8D9CE"]), 0],
 };
-let currentShapes = []; // To track overlapping for when we can't use Poisson
 
-let camXSlider, camYSlider, camZSlider;
+// UTILITY VARIABLES
+let currentShapes = []; // To track overlapping for when we can't use Poisson
 
 function setup() {
   createCanvas(400, 400, WEBGL);
-  // camXSlider = createSlider(-1000, 1000, 600);
-  // camYSlider = createSlider(-1000, 1000, -200);
-  // camZSlider = createSlider(-1000, 1000, 600);
-  // camXSlider.position(10, 10);
-  // camYSlider.position(10, 30);
-  // camZSlider.position(10, 50);
   let camVal = 3100;
   camera(camVal, -camVal, camVal, 0, 200, 0, 0, 1, 0);
   perspective(0.11);
@@ -26,31 +23,29 @@ function setup() {
 }
 
 function draw() {
-  const is3D = is3DGen();
+  background(230);
+
+  // Math.seedrandom(seed);
   ambientLight(230);
   directionalLight(255, 255, 255, 0.5, -0.5, -1);
-  orbitControl();
-  rotateX(PI / 2);
-  // if (is3D) {
-  //   createCanvas(400, 400, WEBGL);
-  //   camera(600, -200, 600, 200, 200, 200);
-  // }
-  // const camX = camXSlider.value();
-  // const camY = camYSlider.value();
-  // const camZ = camZSlider.value();
-  background(230);
-  // camera(600, -600, 600, 200, 200, 0);
-  // camera(10, 0, 0);
-  // perspective(0.01, width / height, 0.1, 1000);
-  // ortho(-width, width, height, -height, -height, height);
 
-  // box(50);
+  rotateX(PI / 2);
 
   strokeWeight(1);
   frameRate(1);
+  // orbitControl();
 
+  // debugMode();
+  // push();
+  // translate(0, 0, -200);
+  // ambientMaterial(color("red"));
+  // box(200, 200, 200);
+  // pop();
+
+  // RANDOMLY GENERATED VARIABLES
+  const is3D = is3DGen();
   const numShapes = numShapesGen(); // number of shapes to draw
-  const shapeSize = 50;
+  const shapeSize = 10;
   const margin = shapeSize / 2 + 2;
   const shapeFreq = shapeFreqGen();
   const theme = themeGen();
@@ -90,20 +85,6 @@ function draw() {
     });
   }
 
-  // for (let i = 0; i < numShapes; i++) {
-  //   do {
-  //     const x = random(width - shapeSize); // random x-coordinate
-  //     const y = random(height - shapeSize); // random y-coordinate
-  //   } while (overlapsWithShapes(x, y, shapeSize));
-
-  //   const shapeType = floor(random(2)); // random shape type
-  //   // Depending on the shape type, draw a circle or a rectangle
-  //   if (shapeType === 0) {
-  //     ellipse(x, y, 50, 50); // draw a circle
-  //   } else {
-  //     rect(x, y, 50, 50); // draw a rectangle
-  //   }
-  // }
   strokeWeight(1);
   noFill();
   rect(width / 2, height / 2, width - 1, height - 1);
@@ -366,72 +347,35 @@ function drawTriangularPrism(x, y, size, triColor) {
 
   let side1 = buildGeometry(() => {
     beginShape();
-    vertex(x - halfBase, y + height / 2, 0);
-    vertex(x + halfBase, y + height / 2, 0);
-    vertex(x + halfBase, y + height / 2, zHeight);
     vertex(x - halfBase, y + height / 2, zHeight);
+    vertex(x + halfBase, y + height / 2, zHeight);
+    vertex(x + halfBase, y + height / 2, 0);
+    vertex(x - halfBase, y + height / 2, 0);
     endShape(CLOSE);
   });
   side1.computeNormals();
-
   model(side1);
 
   let side2 = buildGeometry(() => {
     beginShape();
-    vertex(x - halfBase, y + height / 2, 0);
-    vertex(x, y - height / 2, 0);
-    vertex(x, y - height / 2, zHeight);
     vertex(x - halfBase, y + height / 2, zHeight);
+    vertex(x, y - height / 2, zHeight);
+    vertex(x, y - height / 2, 0);
+    vertex(x - halfBase, y + height / 2, 0);
     endShape(CLOSE);
   });
-
   side2.computeNormals();
   model(side2);
 
   let side3 = buildGeometry(() => {
     beginShape();
-    vertex(x + halfBase, y + height / 2, 0);
-    vertex(x, y - height / 2, 0);
-    vertex(x, y - height / 2, zHeight);
     vertex(x + halfBase, y + height / 2, zHeight);
+    vertex(x, y - height / 2, zHeight);
+    vertex(x, y - height / 2, 0);
+    vertex(x + halfBase, y + height / 2, 0);
     endShape(CLOSE);
   });
 
   side3.computeNormals();
   model(side3);
-
-  // // Side face 1
-  // push();
-  // translate(x - halfBase / 2, y, zHeight / 2);
-  // rotateY(-HALF_PI);
-  // rotateX(-atan(height / halfBase));
-  // rect(0, 0, zHeight, size);
-  // pop();
-
-  // // Side face 2
-  // push();
-  // translate(x + halfBase / 2, y, zHeight / 2);
-  // rotateY(HALF_PI);
-  // rotateX(-atan(height / halfBase));
-  // rect(0, 0, zHeight, size);
-  // pop();
-
-  // Side faces
-  // push();
-  // translate(x - halfBase / 2, y, zHeight / 2);
-  // rotateY(-HALF_PI);
-  // rotateX(-atan(height / halfBase));
-  // box(zHeight, size, height);
-  // pop();
-
-  // push();
-  // translate(x + halfBase / 2, y, zHeight / 2);
-  // rotateY(HALF_PI);
-  // rotateX(-atan(height / halfBase));
-  // box(zHeight, size, height);
-  // pop();
-}
-
-function normalGetter(in1, in2, in3) {
-  // chatGPT
 }
