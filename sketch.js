@@ -1,8 +1,9 @@
-let canControl = false;
+let canControl = true;
 let controls = {
-  numShapes: "any",
+  numShapes: 1,
   // density: [13, 15, 2],
   // shapeFreq: shuffleArray([1, 0, 0, 0]),
+  shapeFreq: [0, 0, 1, 0],
   // theme: [...shuffleArray(["#DB4F54", "#1F3359", "#FCD265", "#B8D9CE"]), 0],
 };
 let currentShapes = []; // To track overlapping for when we can't use Poisson
@@ -28,7 +29,7 @@ function draw() {
   const is3D = is3DGen();
   ambientLight(230);
   directionalLight(255, 255, 255, 0.5, -0.5, -1);
-
+  orbitControl();
   rotateX(PI / 2);
   // if (is3D) {
   //   createCanvas(400, 400, WEBGL);
@@ -49,7 +50,7 @@ function draw() {
   frameRate(1);
 
   const numShapes = numShapesGen(); // number of shapes to draw
-  const shapeSize = 10;
+  const shapeSize = 50;
   const margin = shapeSize / 2 + 2;
   const shapeFreq = shapeFreqGen();
   const theme = themeGen();
@@ -363,13 +364,65 @@ function drawTriangularPrism(x, y, size, triColor) {
   );
   pop();
 
+  let side1 = buildGeometry(() => {
+    beginShape();
+    vertex(x - halfBase, y + height / 2, 0);
+    vertex(x + halfBase, y + height / 2, 0);
+    vertex(x + halfBase, y + height / 2, zHeight);
+    vertex(x - halfBase, y + height / 2, zHeight);
+    endShape(CLOSE);
+  });
+  side1.computeNormals();
+
+  model(side1);
+
+  let side2 = buildGeometry(() => {
+    beginShape();
+    vertex(x - halfBase, y + height / 2, 0);
+    vertex(x, y - height / 2, 0);
+    vertex(x, y - height / 2, zHeight);
+    vertex(x - halfBase, y + height / 2, zHeight);
+    endShape(CLOSE);
+  });
+
+  side2.computeNormals();
+  model(side2);
+
+  let side3 = buildGeometry(() => {
+    beginShape();
+    vertex(x + halfBase, y + height / 2, 0);
+    vertex(x, y - height / 2, 0);
+    vertex(x, y - height / 2, zHeight);
+    vertex(x + halfBase, y + height / 2, zHeight);
+    endShape(CLOSE);
+  });
+
+  side3.computeNormals();
+  model(side3);
+
+  // // Side face 1
+  // push();
+  // translate(x - halfBase / 2, y, zHeight / 2);
+  // rotateY(-HALF_PI);
+  // rotateX(-atan(height / halfBase));
+  // rect(0, 0, zHeight, size);
+  // pop();
+
+  // // Side face 2
+  // push();
+  // translate(x + halfBase / 2, y, zHeight / 2);
+  // rotateY(HALF_PI);
+  // rotateX(-atan(height / halfBase));
+  // rect(0, 0, zHeight, size);
+  // pop();
+
   // Side faces
-  push();
-  translate(x - halfBase / 2, y, zHeight / 2);
-  rotateY(-HALF_PI);
-  rotateX(-atan(height / halfBase));
-  box(zHeight, size, height);
-  pop();
+  // push();
+  // translate(x - halfBase / 2, y, zHeight / 2);
+  // rotateY(-HALF_PI);
+  // rotateX(-atan(height / halfBase));
+  // box(zHeight, size, height);
+  // pop();
 
   // push();
   // translate(x + halfBase / 2, y, zHeight / 2);
@@ -377,50 +430,6 @@ function drawTriangularPrism(x, y, size, triColor) {
   // rotateX(-atan(height / halfBase));
   // box(zHeight, size, height);
   // pop();
-
-  // // Bottom triangle
-
-  // beginShape();
-
-  // vertex(x - halfBase, y + height / 2, 0);
-  // vertex(x + halfBase, y + height / 2, 0);
-  // vertex(x, y - height / 2, 0);
-  // endShape(CLOSE);
-
-  // // Top triangle
-
-  // beginShape();
-
-  // vertex(x - halfBase, y + height / 2, zHeight);
-  // vertex(x + halfBase, y + height / 2, zHeight);
-  // vertex(x, y - height / 2, zHeight);
-  // endShape(CLOSE);
-
-  // // Side faces
-
-  // beginShape();
-
-  // vertex(x - halfBase, y + height / 2, 0);
-  // vertex(x + halfBase, y + height / 2, 0);
-  // vertex(x + halfBase, y + height / 2, zHeight);
-  // vertex(x - halfBase, y + height / 2, zHeight);
-  // endShape(CLOSE);
-
-  // beginShape();
-
-  // vertex(x - halfBase, y + height / 2, 0);
-  // vertex(x, y - height / 2, 0);
-  // vertex(x, y - height / 2, zHeight);
-  // vertex(x - halfBase, y + height / 2, zHeight);
-  // endShape(CLOSE);
-
-  // beginShape();
-
-  // vertex(x + halfBase, y + height / 2, 0);
-  // vertex(x, y - height / 2, 0);
-  // vertex(x, y - height / 2, zHeight);
-  // vertex(x + halfBase, y + height / 2, zHeight);
-  // endShape(CLOSE);
 }
 
 function normalGetter(in1, in2, in3) {
