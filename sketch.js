@@ -20,6 +20,8 @@ function setup() {
   let camVal = 3100;
   camera(camVal, -camVal, camVal, 0, 200, 0, 0, 1, 0);
   perspective(0.11);
+
+  rectMode(CENTER);
 }
 
 function draw() {
@@ -103,7 +105,7 @@ function draw() {
   // }
   strokeWeight(1);
   noFill();
-  rect(0, 0, width - 1, height - 1);
+  rect(width / 2, height / 2, width - 1, height - 1);
 
   noLoop();
 }
@@ -299,6 +301,7 @@ function drawShape3D(x, y, size, frequencies, theme) {
         push();
         translate(x, y, 0);
         rotateX(HALF_PI);
+
         cylinder(size / 2, getRand(size, 200)); // 3D ellipse
         pop();
       } else if (i === 1) {
@@ -308,10 +311,10 @@ function drawShape3D(x, y, size, frequencies, theme) {
         box(size, size, getRand(size, 200)); // 3D box
         pop();
       } else if (i === 2) {
-        // let triColor = color(theme[2]);
+        let triColor = color(theme[2]);
+        triColor = color("green");
 
-        let triColor = color("blue");
-        ambientMaterial("#F6F6F6");
+        // ambientMaterial(color(theme[2]));
 
         // 3D triangle
         drawTriangularPrism(x, y, size, triColor);
@@ -335,50 +338,89 @@ function drawTriangularPrism(x, y, size, triColor) {
   const halfBase = size / 2;
   const height = Math.sqrt(size * size - halfBase * halfBase);
   const zHeight = getRand(size, 200);
+  ambientMaterial(triColor);
 
   // Bottom triangle
-
-  beginShape();
-
-  vertex(x - halfBase, y + height / 2, 0);
-  vertex(x + halfBase, y + height / 2, 0);
-  vertex(x, y - height / 2, 0);
-  endShape(CLOSE);
+  triangle(
+    x - halfBase,
+    y + height / 2,
+    x + halfBase,
+    y + height / 2,
+    x,
+    y - height / 2
+  );
 
   // Top triangle
-
-  beginShape();
-
-  vertex(x - halfBase, y + height / 2, zHeight);
-  vertex(x + halfBase, y + height / 2, zHeight);
-  vertex(x, y - height / 2, zHeight);
-  endShape(CLOSE);
+  push();
+  translate(0, 0, zHeight);
+  triangle(
+    x - halfBase,
+    y + height / 2,
+    x + halfBase,
+    y + height / 2,
+    x,
+    y - height / 2
+  );
+  pop();
 
   // Side faces
+  push();
+  translate(x - halfBase / 2, y, zHeight / 2);
+  rotateY(-HALF_PI);
+  rotateX(-atan(height / halfBase));
+  box(zHeight, size, height);
+  pop();
 
-  beginShape();
+  // push();
+  // translate(x + halfBase / 2, y, zHeight / 2);
+  // rotateY(HALF_PI);
+  // rotateX(-atan(height / halfBase));
+  // box(zHeight, size, height);
+  // pop();
 
-  vertex(x - halfBase, y + height / 2, 0);
-  vertex(x + halfBase, y + height / 2, 0);
-  vertex(x + halfBase, y + height / 2, zHeight);
-  vertex(x - halfBase, y + height / 2, zHeight);
-  endShape(CLOSE);
+  // // Bottom triangle
 
-  beginShape();
+  // beginShape();
 
-  vertex(x - halfBase, y + height / 2, 0);
-  vertex(x, y - height / 2, 0);
-  vertex(x, y - height / 2, zHeight);
-  vertex(x - halfBase, y + height / 2, zHeight);
-  endShape(CLOSE);
+  // vertex(x - halfBase, y + height / 2, 0);
+  // vertex(x + halfBase, y + height / 2, 0);
+  // vertex(x, y - height / 2, 0);
+  // endShape(CLOSE);
 
-  beginShape();
+  // // Top triangle
 
-  vertex(x + halfBase, y + height / 2, 0);
-  vertex(x, y - height / 2, 0);
-  vertex(x, y - height / 2, zHeight);
-  vertex(x + halfBase, y + height / 2, zHeight);
-  endShape(CLOSE);
+  // beginShape();
+
+  // vertex(x - halfBase, y + height / 2, zHeight);
+  // vertex(x + halfBase, y + height / 2, zHeight);
+  // vertex(x, y - height / 2, zHeight);
+  // endShape(CLOSE);
+
+  // // Side faces
+
+  // beginShape();
+
+  // vertex(x - halfBase, y + height / 2, 0);
+  // vertex(x + halfBase, y + height / 2, 0);
+  // vertex(x + halfBase, y + height / 2, zHeight);
+  // vertex(x - halfBase, y + height / 2, zHeight);
+  // endShape(CLOSE);
+
+  // beginShape();
+
+  // vertex(x - halfBase, y + height / 2, 0);
+  // vertex(x, y - height / 2, 0);
+  // vertex(x, y - height / 2, zHeight);
+  // vertex(x - halfBase, y + height / 2, zHeight);
+  // endShape(CLOSE);
+
+  // beginShape();
+
+  // vertex(x + halfBase, y + height / 2, 0);
+  // vertex(x, y - height / 2, 0);
+  // vertex(x, y - height / 2, zHeight);
+  // vertex(x + halfBase, y + height / 2, zHeight);
+  // endShape(CLOSE);
 }
 
 function normalGetter(in1, in2, in3) {
