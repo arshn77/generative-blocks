@@ -3,10 +3,10 @@
 // USER CONTROL VARIABLES
 let canControl = false;
 let controls = {
-  numShapes: 1,
+  // numShapes: "a",
   // density: [13, 15, 2],
   // shapeFreq: shuffleArray([1, 0, 0, 0]),
-  shapeFreq: [0, 0, 1, 0],
+  shapeFreq: [0, 0, 0, 1],
   // theme: [...shuffleArray(["#DB4F54", "#1F3359", "#FCD265", "#B8D9CE"]), 0],
 };
 
@@ -34,13 +34,7 @@ function draw() {
   strokeWeight(1);
   frameRate(1);
   // orbitControl();
-
   // debugMode();
-  // push();
-  // translate(0, 0, -200);
-  // ambientMaterial(color("red"));
-  // box(200, 200, 200);
-  // pop();
 
   // RANDOMLY GENERATED VARIABLES
   const is3D = is3DGen();
@@ -87,6 +81,7 @@ function draw() {
 
   strokeWeight(1);
   noFill();
+  rectMode(CENTER);
   rect(width / 2, height / 2, width - 1, height - 1);
 
   noLoop();
@@ -278,39 +273,27 @@ function drawShape3D(x, y, size, frequencies, theme) {
 
   for (let i = 0; i < cumulativeFreq.length; i++) {
     if (rand < cumulativeFreq[i]) {
+      ambientMaterial(color(theme[i]));
+      push();
+      let zHeight = getRand(size, 200);
+      translate(x, y, zHeight / 2);
       if (i === 0) {
-        ambientMaterial(color(theme[0]));
-        push();
-        translate(x, y, 0);
         rotateX(HALF_PI);
-
-        cylinder(size / 2, getRand(size, 200)); // 3D ellipse
-        pop();
+        cylinder(size / 2, zHeight); // 3D ellipse
       } else if (i === 1) {
-        ambientMaterial(color(theme[1]));
-        push();
-        translate(x, y, 0);
-        box(size, size, getRand(size, 200)); // 3D box
-        pop();
+        box(size, size, zHeight); // 3D box
       } else if (i === 2) {
         let triColor = color(theme[2]);
-        triColor = color("green");
-
-        // ambientMaterial(color(theme[2]));
 
         // 3D triangle
+        pop();
         drawTriangularPrism(x, y, size, triColor);
       } else if (i === 3) {
-        ambientMaterial(color(theme[3]));
-
         // 3D diamond
-        beginShape();
-        vertex(x, y, 0);
-        vertex(x + size / 2, y, size);
-        vertex(x, y, size * 2);
-        vertex(x - size / 2, y, size);
-        endShape(CLOSE);
+        rotateZ(PI / 4);
+        box(size, size, zHeight);
       }
+      pop();
       break;
     }
   }
