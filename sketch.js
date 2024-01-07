@@ -1,12 +1,13 @@
 // let seed = 3;
 
 // USER CONTROL VARIABLES
-let canControl = false;
+let canControl = true;
 let controls = {
-  numShapes: 1,
+  is3D: false,
+  // numShapes: 1,
   // density: [13, 15, 2],
   // shapeFreq: shuffleArray([1, 0, 0, 0]),
-  shapeFreq: [0, 1, 0, 0],
+  // shapeFreq: [0, 1, 0, 0],
   // theme: [...shuffleArray(["#DB4F54", "#1F3359", "#FCD265", "#B8D9CE"]), 0],
 };
 
@@ -14,13 +15,21 @@ let controls = {
 let currentShapes = []; // To track overlapping for when we can't use Poisson
 let simplexNoise = new openSimplexNoise(Math.random());
 
+// GENERATED GLOBAL VARIABLES
+const is3D_global = is3DGen();
+
 function setup() {
-  createCanvas(400, 400, WEBGL);
-  let camVal = 3100;
-  camVal = 900;
-  camera(camVal, -camVal, camVal, 0, 200, 0, 0, 1, 0);
-  // perspective(0.11, width / height, 2000);
-  // perspective(1);
+  if (is3D_global) {
+    createCanvas(400, 400, WEBGL);
+    let camVal = 3100;
+    camVal = 900;
+    camera(camVal, -camVal, camVal, 0, 200, 0, 0, 1, 0);
+    // perspective(0.11, width / height, 2000);
+    // perspective(1);
+  } else {
+    createCanvas(400, 400);
+    console.log("not 3d");
+  }
 
   rectMode(CENTER);
 
@@ -30,38 +39,24 @@ function setup() {
 function draw() {
   background(230);
   // translate(0, 100, 0);
-
-  // Math.seedrandom(seed);
-  // ambientLight(100);
-  const lightVal = 255;
-
-  directionalLight(200, 200, 200, 0.5, -0.5, -1);
-  directionalLight(150, 150, 150, -0.5, 0.5, 1);
-  // lights();
-
-  ambientLight(230);
-
-  rotateX(PI / 2);
-
-  push();
-  ambientMaterial(255);
-  translate(200, 200, -1);
-  box(width - 1, height - 1, 1);
-  pop();
-  // rect(width / 2, height / 2, width - 1, height - 1);
-
-  strokeWeight(1);
-  frameRate(1);
-  // orbitControl();
-  // debugMode();
-
   // RANDOMLY GENERATED VARIABLES
-  const is3D = is3DGen();
+  const is3D = is3D_global;
   const numShapes = numShapesGen(); // number of shapes to draw
   const shapeSize = 10;
   const margin = shapeSize / 2 + 2;
   const shapeFreq = shapeFreqGen();
   const theme = themeGen();
+
+  if (is3D) {
+    lightingSetup();
+  }
+
+  // Math.seedrandom(seed);
+
+  strokeWeight(1);
+  frameRate(1);
+  // orbitControl();
+  // debugMode();
 
   if (numShapes !== "any") {
     for (let i = 0; i < numShapes; i++) {
@@ -72,12 +67,17 @@ function draw() {
       } while (overlapsWithShapes(x, y, shapeSize));
 
       currentShapes.push({ x, y, size: shapeSize });
-      drawShape3D(x, y, shapeSize, shapeFreq, theme);
+      if (is3D) {
+        drawShape3D(x, y, shapeSize, shapeFreq, theme);
+      } else {
+        drawShape(x, y, shapeSize, shapeFreq, theme);
+      }
     }
   } else {
     // width and height need to be modified if we change
     // the center
     [minDistance, maxDistance, tries] = densityGen();
+    console.log(minDistance, maxDistance, tries);
     const pds = new PoissonDiskSampling({
       shape: [width - 2 * margin, height - 2 * margin],
       minDistance: minDistance,
@@ -94,7 +94,11 @@ function draw() {
     points.forEach(([x, y]) => {
       x += margin;
       y += margin;
-      drawShape3D(x, y, shapeSize, shapeFreq, theme);
+      if (is3D) {
+        drawShape3D(x, y, shapeSize, shapeFreq, theme);
+      } else {
+        drawShape(x, y, shapeSize, shapeFreq, theme);
+      }
     });
   }
 
@@ -127,18 +131,18 @@ function is3DGen() {
     { probability: 1, result: true },
   ];
 
-  return canControl && controls.is3D ? controls.is3D : cdf(dataArray);
+  return canControl && "is3D" in controls ? controls.is3D : cdf(dataArray);
 }
 
 // Have to re-edit values for diff shape sizes
 function densityGen(shapeSize) {
   const dataArray = [
     // Density is in form of [minDistance, maxDistance, tries]
-    { probability: 0.1, result: [10, 13, 200] }, // very packed
+    { probability: 0.1, result: [13, 14, 200] }, // very packed
     { probability: 0.03, result: [25, 40, 30] }, // not packed
     {
       probability: 1,
-      result: [getRand(10, 18), getRand(14, 30), getRand(1, 7)],
+      result: [getRand(10, 18), getRand(14, 30), getRand(40, 200)],
     }, // in-between
   ];
 
@@ -402,4 +406,24 @@ function drawTriangularPrism(x, y, size, triColor, zHeight) {
 
   side3.computeNormals();
   model(side3);
+}
+
+function lightingSetup() {
+  // ambientLight(100);
+  const lightVal = 255;
+
+  directionalLight(200, 200, 200, 0.5, -0.5, -1);
+  directionalLight(150, 150, 150, -0.5, 0.5, 1);
+  // lights();
+
+  ambientLight(230);
+
+  rotateX(PI / 2);
+
+  push();
+  ambientMaterial(255);
+  translate(200, 200, -1);
+  box(width - 1, height - 1, 1);
+  pop();
+  // rect(width / 2, height / 2, width - 1, height - 1);
 }
