@@ -3,33 +3,52 @@
 // USER CONTROL VARIABLES
 let canControl = false;
 let controls = {
-  // numShapes: "a",
+  numShapes: 1,
   // density: [13, 15, 2],
   // shapeFreq: shuffleArray([1, 0, 0, 0]),
-  shapeFreq: [0, 0, 0, 1],
+  shapeFreq: [0, 1, 0, 0],
   // theme: [...shuffleArray(["#DB4F54", "#1F3359", "#FCD265", "#B8D9CE"]), 0],
 };
 
 // UTILITY VARIABLES
 let currentShapes = []; // To track overlapping for when we can't use Poisson
+let simplexNoise = new openSimplexNoise(Math.random());
 
 function setup() {
   createCanvas(400, 400, WEBGL);
   let camVal = 3100;
+  camVal = 900;
   camera(camVal, -camVal, camVal, 0, 200, 0, 0, 1, 0);
-  perspective(0.11);
+  // perspective(0.11, width / height, 2000);
+  // perspective(1);
 
   rectMode(CENTER);
+
+  // createEasyCam();
 }
 
 function draw() {
   background(230);
+  // translate(0, 100, 0);
 
   // Math.seedrandom(seed);
+  // ambientLight(100);
+  const lightVal = 255;
+
+  directionalLight(200, 200, 200, 0.5, -0.5, -1);
+  directionalLight(150, 150, 150, -0.5, 0.5, 1);
+  // lights();
+
   ambientLight(230);
-  directionalLight(255, 255, 255, 0.5, -0.5, -1);
 
   rotateX(PI / 2);
+
+  push();
+  ambientMaterial(255);
+  translate(200, 200, -1);
+  box(width - 1, height - 1, 1);
+  pop();
+  // rect(width / 2, height / 2, width - 1, height - 1);
 
   strokeWeight(1);
   frameRate(1);
@@ -82,7 +101,8 @@ function draw() {
   strokeWeight(1);
   noFill();
   rectMode(CENTER);
-  rect(width / 2, height / 2, width - 1, height - 1);
+
+  // rect(width / 2, height / 2, width - 1, height - 1);
 
   noLoop();
 }
@@ -114,8 +134,8 @@ function is3DGen() {
 function densityGen(shapeSize) {
   const dataArray = [
     // Density is in form of [minDistance, maxDistance, tries]
-    { probability: 0.05, result: [10, 13, 200] }, // very packed
-    { probability: 0.15, result: [25, 40, 30] }, // not packed
+    { probability: 0.1, result: [10, 13, 200] }, // very packed
+    { probability: 0.03, result: [25, 40, 30] }, // not packed
     {
       probability: 1,
       result: [getRand(10, 18), getRand(14, 30), getRand(1, 7)],
@@ -150,14 +170,17 @@ function themeGen() {
     { probability: 0.1, result: ["black", "black", "black", "black", 0] }, //
     {
       probability: 0.1,
-      result: [...shuffleArray(["blue", "red", "yellow", "purple"]), 0],
+      result: [...shuffleArray(["blue", "red", "#FF9900", "purple"]), 0],
     }, //
     {
       probability: 0.1,
       result: [...shuffleArray(["black", "red", "black", "red"]), 0],
     }, //
-    { probability: 1, result: ["blue", "red", "yellow", "purple", 0] }, //
+    { probability: 1, result: ["blue", "red", "#FF9900", "purple", 0] }, //
   ];
+
+  console.log("theme");
+  console.log(cdf(dataArray));
 
   return canControl && controls.theme ? controls.theme : cdf(dataArray);
 }
@@ -172,6 +195,7 @@ function cdf(dataArray) {
   for (let data of dataArray) {
     sum += data.probability;
     if (rand < sum) {
+      console.log(data.result);
       return data.result;
     }
   }
@@ -196,9 +220,8 @@ function drawShape(x, y, size, frequencies, theme) {
     frequencies[0] + frequencies[1] + frequencies[2] + frequencies[3],
   ];
 
-  console.log(cumulativeFreq);
   strokeWeight(theme[4]);
-  console.log(theme[4]);
+  // console.log(theme[4]);
 
   for (let i = 0; i < cumulativeFreq.length; i++) {
     if (rand < cumulativeFreq[i]) {
@@ -267,19 +290,37 @@ function drawShape3D(x, y, size, frequencies, theme) {
     frequencies[0] + frequencies[1] + frequencies[2] + frequencies[3],
   ];
 
-  console.log(cumulativeFreq);
-  strokeWeight(theme[4]);
-  console.log(theme[4]);
+  strokeWeight(1);
+
+  let noiseScale = 0.009;
 
   for (let i = 0; i < cumulativeFreq.length; i++) {
     if (rand < cumulativeFreq[i]) {
       ambientMaterial(color(theme[i]));
+
+      let noise =
+        (simplexNoise.noise2D(noiseScale * x, noiseScale * y) + 1) / 2;
+      let zHeight = noise * 300;
+
       push();
-      let zHeight = getRand(size, 200);
       translate(x, y, zHeight / 2);
       if (i === 0) {
+        strokeWeight(0);
+
+        push();
+        if (theme[0] === "white") {
+          strokeWeight(theme[4]);
+        }
         rotateX(HALF_PI);
-        cylinder(size / 2, zHeight); // 3D ellipse
+        cylinder(size / 2, zHeight); // 3D cylinder
+        pop();
+        push();
+        strokeWeight(0.5);
+
+        translate(0, 0, zHeight / 2);
+
+        ellipse(0, 0, size);
+        pop();
       } else if (i === 1) {
         box(size, size, zHeight); // 3D box
       } else if (i === 2) {
@@ -287,7 +328,7 @@ function drawShape3D(x, y, size, frequencies, theme) {
 
         // 3D triangle
         pop();
-        drawTriangularPrism(x, y, size, triColor);
+        drawTriangularPrism(x, y, size, triColor, zHeight);
       } else if (i === 3) {
         // 3D diamond
         rotateZ(PI / 4);
@@ -299,10 +340,10 @@ function drawShape3D(x, y, size, frequencies, theme) {
   }
 }
 
-function drawTriangularPrism(x, y, size, triColor) {
+function drawTriangularPrism(x, y, size, triColor, zHeight) {
   const halfBase = size / 2;
   const height = Math.sqrt(size * size - halfBase * halfBase);
-  const zHeight = getRand(size, 200);
+
   ambientMaterial(triColor);
 
   // Bottom triangle
