@@ -41,7 +41,7 @@ function draw() {
   // RANDOMLY GENERATED VARIABLES
   const is3D = is3D_global;
   const numShapes = numShapesGen(); // number of shapes to draw
-  const shapeSize = 10;
+  const shapeSize = shapeSizeGen();
   const margin = shapeSize / 2 + 2;
   const shapeFreq = shapeFreqGen();
   const theme = themeGen();
@@ -76,7 +76,8 @@ function draw() {
   } else {
     // width and height need to be modified if we change
     // the center
-    [minDistance, maxDistance, tries] = densityGen();
+    [minDistance, maxDistance, tries] = densityGen(shapeSize);
+    console.log(minDistance, maxDistance, tries);
     const pds = new PoissonDiskSampling({
       shape: [width - 2 * margin, height - 2 * margin],
       minDistance: minDistance,
