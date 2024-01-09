@@ -19,7 +19,35 @@
   </head>
 
   <body>
+    <form onsubmit="updateControls(event)">
+
+      <label>Density: </label>
+      <label for="minDistance">Minimum distance</label>
+      <input type="range" id="minDistance" name="minDistance" min="1" max="10" step="0.1" value="1.3">
+
+      <label for="maxDistance">Maximum distance</label>
+      <input type="range" id="maxDistance" name="maxDistance" min="1" max="10" step="0.1" value="1.3">
     
+      
+      <label for="shapeSize">Shape Size:</label>
+      <input type="range" id="shapeSize" name="shapeSize" min="1" max="100" step="1" value="10">
+      
+
+      <label for="x">:</label>
+      <input type="range" id="x" name="x" min="1" max="100" step="1" value="10">
+
+      <div class="slider">
+        <input type="range" min="0" max="100" value="50" class="slider-range" id="mySlider">
+        <output class="slider-value" id="sliderOutput">50</output>
+      </div>
+      
+    
+      <button type="submit">Update Controls</button>
+    </form>
+
+    <p>Testing, ehllo, test the font lazy fox dog</p>
+    
+
     <script src="./probability_generators/numShapesGen.js"></script>
     <script src="./probability_generators/densityGen.js"></script>
     <script src="./probability_generators/is3DGen.js"></script>
@@ -36,6 +64,7 @@
     <script src="./utils/lightingSetup.js"></script>
     <script src="./utils/overlapsWithShapes.js"></script>
     <script src="./utils/shuffleArray.js"></script>
+    <script src="./utils/updateControls.js"></script>
 
     <script src="sketch.js"></script>
   </body>
