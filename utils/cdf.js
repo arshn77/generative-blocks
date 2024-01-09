@@ -6,7 +6,6 @@ function cdf(dataArray) {
   for (let data of dataArray) {
     sum += data.probability;
     if (rand < sum) {
-      console.log(data.result);
       return data.result;
     }
   }

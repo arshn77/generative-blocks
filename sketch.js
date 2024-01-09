@@ -1,10 +1,10 @@
 // let seed = 3;
 
 // USER CONTROL VARIABLES
-let canControl = false;
+let canControl = true;
 let controls = {
-  is3D: false,
-  numShapes: 1,
+  is3D: true,
+  // numShapes: 1,
   // density: [13, 15, 2],
   // shapeFreq: shuffleArray([1, 0, 0, 0]),
   // shapeFreq: [0, 1, 0, 0],
@@ -28,7 +28,6 @@ function setup() {
     // perspective(1);
   } else {
     createCanvas(400, 400);
-    console.log("not 3d");
   }
 
   rectMode(CENTER);
@@ -46,6 +45,7 @@ function draw() {
   const margin = shapeSize / 2 + 2;
   const shapeFreq = shapeFreqGen();
   const theme = themeGen();
+  const simplexNoiseParam = simplexNoiseParamGen();
 
   if (is3D) {
     lightingSetup();
@@ -68,7 +68,7 @@ function draw() {
 
       currentShapes.push({ x, y, size: shapeSize });
       if (is3D) {
-        drawShape3D(x, y, shapeSize, shapeFreq, theme);
+        drawShape3D(x, y, shapeSize, shapeFreq, theme, simplexNoiseParam);
       } else {
         drawShape(x, y, shapeSize, shapeFreq, theme);
       }
@@ -77,7 +77,6 @@ function draw() {
     // width and height need to be modified if we change
     // the center
     [minDistance, maxDistance, tries] = densityGen();
-    console.log(minDistance, maxDistance, tries);
     const pds = new PoissonDiskSampling({
       shape: [width - 2 * margin, height - 2 * margin],
       minDistance: minDistance,
@@ -95,7 +94,7 @@ function draw() {
       x += margin;
       y += margin;
       if (is3D) {
-        drawShape3D(x, y, shapeSize, shapeFreq, theme);
+        drawShape3D(x, y, shapeSize, shapeFreq, theme, simplexNoiseParam);
       } else {
         drawShape(x, y, shapeSize, shapeFreq, theme);
       }

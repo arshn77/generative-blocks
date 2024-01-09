@@ -14,8 +14,5 @@ function themeGen() {
     { probability: 1, result: ["blue", "red", "yellow", "purple", 0] }, //
   ];
 
-  console.log("theme");
-  console.log(cdf(dataArray));
-
   return canControl && controls.theme ? controls.theme : cdf(dataArray);
 }

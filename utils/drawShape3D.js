@@ -1,4 +1,4 @@
-function drawShape3D(x, y, size, frequencies, theme) {
+function drawShape3D(x, y, size, frequencies, theme, noiseParams) {
   const rand = Math.random();
 
   let cumulativeFreq = [
@@ -14,7 +14,8 @@ function drawShape3D(x, y, size, frequencies, theme) {
 
   strokeWeight(1);
 
-  let noiseScale = 0.009;
+  let noiseScale = noiseParams.noiseScale;
+  let maxHeight = noiseParams.maxHeight;
 
   for (let i = 0; i < cumulativeFreq.length; i++) {
     if (rand < cumulativeFreq[i]) {
@@ -22,7 +23,7 @@ function drawShape3D(x, y, size, frequencies, theme) {
 
       let noise =
         (simplexNoise.noise2D(noiseScale * x, noiseScale * y) + 1) / 2;
-      let zHeight = noise * 300;
+      let zHeight = noise * maxHeight;
 
       push();
       translate(x, y, zHeight / 2);
