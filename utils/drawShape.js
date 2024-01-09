@@ -21,6 +21,7 @@ function drawShape(x, y, size, frequencies, theme) {
         square(x - size / 2, y - size / 2, size);
         //
       } else if (i === 2) {
+        fill(theme[2]);
         const halfBase = size / 2;
         const height = Math.sqrt(size * size - halfBase * halfBase);
         triangle(

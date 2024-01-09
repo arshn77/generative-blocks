@@ -1,14 +1,15 @@
 // let seed = 3;
 
 // USER CONTROL VARIABLES
-let canControl = true;
+let canControl = false;
 let controls = {
   is3D: true,
-  // numShapes: 1,
-  // density: [13, 15, 2],
-  // shapeFreq: shuffleArray([1, 0, 0, 0]),
-  // shapeFreq: [0, 1, 0, 0],
-  // theme: [...shuffleArray(["#DB4F54", "#1F3359", "#FCD265", "#B8D9CE"]), 0],
+  numShapes: "any",
+  density: [1.3, 1.5, 60],
+  shapeFreq: [0.25, 0.25, 0.25, 0.25],
+  theme: ["blue", "red", "yellow", "purple", 0],
+  shapeSize: 10,
+  simplexNoiseParam: { noiseScale: 0.005, maxHeight: getRand(170, 340) },
 };
 
 // UTILITY VARIABLES
@@ -80,8 +81,8 @@ function draw() {
     console.log(minDistance, maxDistance, tries);
     const pds = new PoissonDiskSampling({
       shape: [width - 2 * margin, height - 2 * margin],
-      minDistance: minDistance,
-      maxDistance: maxDistance,
+      minDistance: shapeSize * minDistance,
+      maxDistance: shapeSize * maxDistance,
       tries: tries,
     });
 

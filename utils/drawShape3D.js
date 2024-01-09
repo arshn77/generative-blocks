@@ -26,9 +26,9 @@ function drawShape3D(x, y, size, frequencies, theme, noiseParams) {
       let zHeight = noise * maxHeight;
 
       push();
-      translate(x, y, zHeight / 2);
       if (i === 0) {
         strokeWeight(0);
+        translate(x, y, zHeight / 2);
 
         push();
         if (theme[0] === "white") {
@@ -45,15 +45,19 @@ function drawShape3D(x, y, size, frequencies, theme, noiseParams) {
         ellipse(0, 0, size);
         pop();
       } else if (i === 1) {
+        translate(x, y, zHeight / 2);
+
         box(size, size, zHeight); // 3D box
       } else if (i === 2) {
         let triColor = color(theme[2]);
 
         // 3D triangle
-        pop();
+
         drawTriangularPrism(x, y, size, triColor, zHeight);
       } else if (i === 3) {
         // 3D diamond
+        translate(x, y, zHeight / 2);
+
         rotateZ(PI / 4);
         box(size, size, zHeight);
       }
