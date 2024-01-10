@@ -21,31 +21,58 @@
   <body>
     <form onsubmit="updateControls(event)">
 
-      <label>Density: </label>
-      <label for="minDistance">Minimum distance</label>
-      <input type="range" id="minDistance" name="minDistance" min="1" max="10" step="0.1" value="1.3">
+      <div>
+        <label><strong>Density: </strong></label>
+        <label for="minDistance">Minimum distance</label>
+        <input type="range" id="minDistance" name="minDistance" min="1" max="10" step="0.1" value="1.3">
+        <output class="slider-value">50</output>
 
-      <label for="maxDistance">Maximum distance</label>
-      <input type="range" id="maxDistance" name="maxDistance" min="1" max="10" step="0.1" value="1.3">
-    
-      
-      <label for="shapeSize">Shape Size:</label>
-      <input type="range" id="shapeSize" name="shapeSize" min="1" max="100" step="1" value="10">
-      
+        <label for="maxDistance">Maximum distance</label>
+        <input type="range" id="maxDistance" name="maxDistance" min="1" max="10" step="0.1" value="1.3">
+        <output class="slider-value">50</output>
 
-      <label for="x">:</label>
-      <input type="range" id="x" name="x" min="1" max="100" step="1" value="10">
-
-      <div class="slider">
-        <input type="range" min="0" max="100" value="50" class="slider-range" id="mySlider">
-        <output class="slider-value" id="sliderOutput">50</output>
+        <label for="numShapes">numShapes: </label>
+        <input type="range" id="numShapes" name="numShapes" min="0" max="100" step="1" value="50">
+        <output class="slider-value">50</output>
       </div>
       
+      <div>
+        <label for="shapeSize">Shape Size:</label>
+        <!-- 3D/2D -->
+      </div>
+
+      <div>
+        <label><Strong>Shape Ratios</Strong></label>
+
+        <label for="Circle">Circle: </label>
+        <input type="range" id="Circle" name="Circle" min="0" max="1" step=".01" value=".25">
+        <output class="slider-value">.25</output>
+
+        <label for="Square">Square: </label>
+        <input type="range" id="Square" name="Square" min="0" max="1" step=".01" value=".25">
+        <output class="slider-value">.25</output>
+
+        <label for="Triangle">Triangle: </label>
+        <input type="range" id="Triangle" name="Triangle" min="0" max="1" step=".01" value=".25">
+        <output class="slider-value">.25</output>
+
+        <label for="Diamond">Diamond: </label>
+        <input type="range" id="Diamond" name="Diamond" min="0" max="1" step=".01" value=".25">
+        <output class="slider-value">.25</output>
+      </div>
+
+      <div>
+        <label><Strong>Height</Strong></label>
+
+        <label for="Variance">Variance: </label>
+        <input type="range" id="Variance" name="Variance" min="0" max="1" step=".01" value=".25">
+        <output class="slider-value">.25</output>
+      </div>
+
     
-      <button type="submit">Update Controls</button>
+      <button type="submit">Draw New</button>
     </form>
 
-    <p>Testing, ehllo, test the font lazy fox dog</p>
     
 
     <script src="./probability_generators/numShapesGen.js"></script>

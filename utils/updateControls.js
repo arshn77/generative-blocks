@@ -4,18 +4,24 @@ function updateControls(e) {
   elements = e.target.elements;
 }
 
-const slider = document.getElementById("mySlider");
-const output = document.getElementById("sliderOutput");
+// Select all sliders
+const sliders = document.querySelectorAll("input[type=range]");
 
-const updateProgressBar = () => {
-  const ratio = ((slider.value - slider.min) / (slider.max - slider.min)) * 100;
-  slider.style.background = `linear-gradient(to right, black 0%, black ${ratio}%, #ddd ${ratio}%, #ddd 100%)`;
-};
+sliders.forEach((slider) => {
+  // Get the output element for this slider
+  const output = slider.nextElementSibling;
 
-slider.addEventListener("input", function () {
-  output.textContent = slider.value;
+  const updateProgressBar = () => {
+    const ratio =
+      ((slider.value - slider.min) / (slider.max - slider.min)) * 100;
+    slider.style.background = `linear-gradient(to right, black 0%, black ${ratio}%, #ddd ${ratio}%, #ddd 100%)`;
+  };
+
+  slider.addEventListener("input", function () {
+    output.textContent = slider.value;
+    updateProgressBar();
+  });
+
+  // Initial update of progress bar on page load
   updateProgressBar();
 });
-
-// Initial update of progress bar on page load
-updateProgressBar();
