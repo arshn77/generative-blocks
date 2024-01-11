@@ -9,13 +9,26 @@ html, body {
 
 }
 
+html {
+  display: flex;
+  justify-content: center;
+  /* align-items: center; */
+}
+
+body {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
 canvas {
   display: block;
-  position: absolute;
+  /* position: absolute;
   top: 0;
-  right: 0;
-  margin: 10px;
-  
+  right: 0; */
+  margin: 30px;
+  /* border: 2px solid black;
+  border-radius: 20px; */
 }
 
 /* Some chat GPT generation */
