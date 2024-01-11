@@ -1,3 +1,7 @@
+:root {
+  --thumb-size: 15px;
+}
+
 html, body {
   margin: 0;
   padding: 0;
@@ -7,9 +11,14 @@ html, body {
 
 canvas {
   display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 10px;
+  
 }
 
-/* Chat GPT styling */
+/* Some chat GPT generation */
 
 @font-face {
   font-family: 'geist';
@@ -24,7 +33,7 @@ canvas {
 input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
-  height: 10px;
+  height: 7px;
   border-radius: 5px;
   background-color: #ddd;
   outline: none;
@@ -33,30 +42,35 @@ input[type="range"] {
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 20px;
-  height: 20px;
+  width: var(--thumb-size);
+  height: var(--thumb-size);
   border-radius: 50%;
   background: #fff;
-  cursor: pointer;
-  border: 1px solid #000;
-  margin-top: -5px; /* Adjust vertically for centering */
+  border: 1px solid grey;
+  margin-top: -2.5px;
+  /* margin-top: calc(var(--thumb-size)*-0.25); */
+   /* Adjust vertically for centering */
 }
 
 input[type="range"]::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
+  width: var(--thumb-size);
+  height: var(--thumb-size);
   border-radius: 50%;
   background: #fff;
-  cursor: pointer;
-  border: 1px solid #000;
+  border: 1px solid grey;
 }
 
 /* Create the progress bar effect */
 input[type="range"]::-webkit-slider-runnable-track {
   width: 100%;
   height: 10px;
-  cursor: pointer;
 }
+
+
+
+
+
+
 
 .slider-value {
   /* display: block; */
@@ -65,4 +79,92 @@ input[type="range"]::-webkit-slider-runnable-track {
   font-family: geist, Arial, sans-serif;
   /* font-size: 18px; */
   color: black;
+}
+
+
+
+input[type="radio"]:checked + .button {
+  background-color: blue;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  margin: 5px;
+}
+
+.container > div:first-child{
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+}
+
+.container > div:last-child{
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+
+.container > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid black;
+
+   
+  padding: 10px; 
+  /* gap: 10px;  */
+}
+
+.container > div > label:first-child, .extra-title {
+  font-size: 20px;
+  padding-bottom: 10px
+}
+
+.extra-title {
+  padding-top: 20px;
+}
+
+.top-button {
+  border-top-left-radius: 10px; 
+  border-top-right-radius: 10px; 
+}
+
+.bottom-button {
+  border-bottom-left-radius: 10px; 
+  border-bottom-right-radius: 10px; 
+}
+
+.button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: white;
+  color: black;
+  font-size: 12px;
+  outline: 1px solid black;
+  text-align: center;
+  width: 50px;
+}
+
+.small{
+  width: 20px;
+}
+
+
+input[type="radio"]:checked + .button {
+  color: white;
+}
+
+#primary:checked + .button {
+  background-color: blue; 
+}
+
+#dystopia:checked + .button {
+  background-color: gray; /* Or any other color you want when selected */
+}
+
+#crimson:checked + .button {
+  background-color: maroon; /* Or any other color you want when selected */
+}
+
+#shuffled:checked + .button {
+  background-color: green; /* Or any other color you want when selected */
 }
