@@ -37,6 +37,9 @@ function setup() {
 }
 
 function draw() {
+  console.log("draw called");
+  console.log(controls);
+  console.log(canControl);
   background(230);
   // translate(0, 100, 0);
   // RANDOMLY GENERATED VARIABLES

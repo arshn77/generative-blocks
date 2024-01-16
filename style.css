@@ -1,3 +1,5 @@
+/* A decent amount of the CSS was done with chat GPT help */
+
 :root {
   --thumb-size: 15px;
 }
@@ -31,7 +33,7 @@ canvas {
   border-radius: 20px; */
 }
 
-/* Some chat GPT generation */
+
 
 @font-face {
   font-family: 'geist';
@@ -170,8 +172,12 @@ input[type="radio"]:checked + .button {
   background-color: blue; 
 }
 
-#dystopia:checked + .button {
-  background-color: gray; /* Or any other color you want when selected */
+#utopia:checked + .button {
+  background-color: gray;
+}
+
+#midnight:checked + .button {
+  background-color: rgb(36, 36, 36); 
 }
 
 #crimson:checked + .button {
