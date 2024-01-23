@@ -43,6 +43,7 @@ function resetup() {
     camera();
   }
 
+  console.log("resetup canControl", canControl);
   rectMode(CENTER);
 
   // createEasyCam();
@@ -50,8 +51,8 @@ function resetup() {
 
 function draw() {
   // console.log("draw called");
-  // console.log(controls);
-  // console.log(canControl);
+  console.log("controls", controls);
+  console.log("canControl", canControl);
   background(230);
 
   simplexNoise = new openSimplexNoise(Math.random());

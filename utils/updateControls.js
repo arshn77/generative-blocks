@@ -3,6 +3,8 @@ function updateControls(e) {
 
   elements = e.target.elements;
 
+  console.log("updateControls is running");
+
   canControl = true;
   controls = {
     density: [
@@ -131,4 +133,15 @@ function saveImages(i = 0) {
   saveCanvas();
 
   setTimeout(() => saveImages(i + 1), 1000); // Wait for 1 second
+}
+
+function genRandom() {
+  canControl = false;
+  console.log("genRandom canControl", canControl);
+  resetup();
+  redraw();
+}
+
+function downloadImage() {
+  saveCanvas();
 }

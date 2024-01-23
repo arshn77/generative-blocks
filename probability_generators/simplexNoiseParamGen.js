@@ -16,14 +16,14 @@ function simplexNoiseParamGen() {
     },
   ];
 
-  console.log(
-    "SIMPLEX NOISE PARAM GEN",
-    canControl && controls.simplexNoiseParam
-      ? controls.simplexNoiseParam
-      : dataArray
-  );
+  // console.log(
+  //   "SIMPLEX NOISE PARAM GEN",
+  //   canControl && controls.simplexNoiseParam
+  //     ? controls.simplexNoiseParam
+  //     : dataArray
+  // );
 
-  console.log("canControl", canControl);
+  // console.log("canControl", canControl);
 
   return canControl && controls.simplexNoiseParam
     ? controls.simplexNoiseParam
