@@ -93,8 +93,8 @@
           <label><Strong>Height</Strong></label>
 
           <label for="maxHeight">Max Height: </label>
-          <input type="range" id="maxHeight" name="maxHeight" min="170" max="340" step="1" value="250">
-          <output class="slider-value">0.25</output>
+          <input type="range" id="maxHeight" name="maxHeight" min="10" max="340" step="1" value="250">
+          <output class="slider-value">250</output>
 
           <label for="variance">Variance: </label>
           <input type="range" id="variance" name="variance" min="0.01" max="1" step=".01" value=".5">
@@ -127,6 +127,10 @@
       <button type="submit">Draw New</button>
     </form>
 
+    <button onClick="saveImages(); canControl=true">Big Body yrrr</button>
+
+    <h1>Featured Generations</h1>
+
     
 
     <script src="./probability_generators/numShapesGen.js"></script>
@@ -146,6 +150,7 @@
     <script src="./utils/overlapsWithShapes.js"></script>
     <script src="./utils/shuffleArray.js"></script>
     <script src="./utils/updateControls.js"></script>
+    <script src=".utils/imageScroll.js"></script>
 
     <script src="sketch.js"></script>
   </body>

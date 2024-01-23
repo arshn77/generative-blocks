@@ -42,7 +42,7 @@ function updateControls(e) {
       controls.is3D = false;
       break;
     case "3D":
-      controls.is3d = true;
+      controls.is3D = true;
       break;
   }
 
@@ -60,7 +60,6 @@ function updateControls(e) {
   }
 
   // Setting theme
-  console.log("theme value", elements.theme.value);
   switch (elements.theme.value) {
     case "primary":
       controls.theme = ["blue", "red", "yellow", "purple", 0];
@@ -85,9 +84,8 @@ function updateControls(e) {
   }
 
   // Finally redraw
+  resetup();
   redraw();
-  console.log(controls);
-  cos;
 }
 
 // Some GPT help for styling using javascript
@@ -123,3 +121,14 @@ sliders.forEach((slider) => {
     output.textContent = "A lot";
   }
 });
+
+function saveImages(i = 0) {
+  if (i >= 50) return;
+  canControl = false;
+
+  resetup();
+  redraw();
+  saveCanvas();
+
+  setTimeout(() => saveImages(i + 1), 1000); // Wait for 1 second
+}

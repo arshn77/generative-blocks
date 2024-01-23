@@ -16,6 +16,7 @@ function drawShape3D(x, y, size, frequencies, theme, noiseParams) {
 
   let noiseScale = noiseParams.noiseScale;
   let maxHeight = noiseParams.maxHeight;
+  console.log("simplex noise", noiseScale, maxHeight);
 
   for (let i = 0; i < cumulativeFreq.length; i++) {
     if (rand < cumulativeFreq[i]) {
