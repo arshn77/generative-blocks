@@ -2,8 +2,8 @@
 
 let images = [];
 for (let i = 1; i <= 25; i++) {
-  images.push(`/images/${i}.jpg`);
-  images.push(`/images/${i}.png`);
+  images.push(`/generative-blocks/images/${i}.jpg`);
+  images.push(`/generative-blocks/images/${i}.png`);
 }
 
 let imageIndex = 0;
